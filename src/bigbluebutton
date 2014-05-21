@@ -1,0 +1,62 @@
+#!/usr/bin/perl -w
+# -*- perl -*-
+
+=head1 NAME
+
+bigbluebutton - Plugin to monitor bigbluebutton usage
+
+=head1 CONFIGURATION
+
+No configuration
+
+=head1 AUTHORS
+
+Original Author: Adrian Fish
+
+=head1 LICENSE
+
+Unknown license
+
+=head1 MAGIC MARKERS
+
+ #%# family=auto
+ #%# capabilities=autoconf
+
+=cut
+
+use Munin::Plugin;
+use WWW::BBB::API;
+
+if ($ARGV[0] and $ARGV[0] eq "autoconf") {
+	if (-e '/usr/local/bin/bbb-conf' && -x _) {
+		print "yes\n";
+	} else {
+		print "no\n";
+	}
+} elsif ($ARGV[0] and $ARGV[0] eq "config") {
+    print "graph_args -l 0\n";
+    print "graph_vlabel Meetings/Total Users\n";
+    print "graph_title Number of Meetings and Users\n";
+    print "graph_category bigbluebutton\n";
+    print "graph_info This graph shows how many BigBlueButton meetings are currently in progress and the total users.\n";
+    print "meetings.label meetings\n";
+    print "meetings.type COUNTER\n";
+    print "totalusers.label total users\n";
+    print "totalusers.type COUNTER\n";
+} else {
+	`bbb-conf --salt` =~ m/Salt: (.*)/;
+	my $salt = $1;
+
+	`bbb-conf --salt` =~ m/http:\/\/(.*)\/bigbluebutton\//;
+	my $host = $1;
+
+	my $bbb = new WWW::BBB::API(salt => $salt, host => $host);
+	my $meetings = $bbb->getMeetings->{meetings};
+
+	print 'meetings.value ', scalar(keys(%$meetings)), "\n";
+	print 'totalusers.value ', $bbb->getTotalParticipants, "\n";
+}
+
+exit 0;
+
+# vim:syntax=perl:ts=4

@@ -1,0 +1,13 @@
+Source: bigbluebutton-munin
+Section: unknown
+Priority: extra
+Maintainer: Adrian Fish <a.fish@lancaster.ac.uk>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: <insert the upstream URL, if relevant>
+
+Package: bigbluebutton-munin
+Architecture: all
+Depends: libwww-bbb-perl,munin-node,bigbluebutton
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
