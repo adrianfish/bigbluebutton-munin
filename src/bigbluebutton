@@ -44,10 +44,10 @@ if ($ARGV[0] and $ARGV[0] eq "autoconf") {
     print "totalusers.label total users\n";
     print "totalusers.type COUNTER\n";
 } else {
-	`bbb-conf --salt` =~ m/Salt: (.*)/;
+	`bbb-conf --secret` =~ m/Secret: (.*)/;
 	my $salt = $1;
 
-	`bbb-conf --salt` =~ m/http:\/\/(.*)\/bigbluebutton\//;
+	`bbb-conf --secret` =~ m/http:\/\/(.*)\/bigbluebutton\//;
 	my $host = $1;
 
 	my $bbb = new WWW::BBB::API(salt => $salt, host => $host);
