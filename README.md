@@ -1,4 +1,4 @@
 bigbluebutton-munin
 ===================
 
-A Munin plugin fot monitoring BigBlueButton
+A Munin plugin for monitoring BigBlueButton
